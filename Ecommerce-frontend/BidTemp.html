@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body{
+            background-color: #000;
+        }
+
+
+        .bidding-container {
+            margin: 8rem auto;
+            width: 90%;
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 20px;
+            background: #222;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: fadeIn 1s ease forwards;
+            overflow: hidden;
+        }
+        .text{
+            color: #42e695;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 15px;
+        }
+
+        .product-info h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #ff6ec4;
+        }
+
+        .current-bid,
+        .timer,
+        .bid-section {
+            font-size: 1.5em;
+            margin: 15px 0;
+            color: #42e695;
+        }
+
+        .timer {
+            color: #ffcc00;
+        }
+
+        .bid-section input[type="number"] {
+            padding: 10px;
+            font-size: 1em;
+            width: 100%;
+            max-width: 200px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .place-bid {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #fff;
+            background: #42e695;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .place-bid:hover {
+            background: #30cfd0;
+        }
+
+        .bid-result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #ff6ec4;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bidding-container">
+        <div class="product-image">
+            <img src="https://images.unsplash.com/photo-1512374382149-233c42b6a83b?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+        </div>
+        <div class="product-info">
+            <h1>
+                Sample Product Name
+            </h1>
+            <p class="text-white text">
+                This is a sample description of the product.<br>
+            </p>
+
+            <div class="current-bid">Current Highest Bid: $<span id="currentBid">100</span></div>
+            <div class="timer">Bid will end at : <span id="countdown">23:59</span></div>
+
+            <form action="/bid" method="POST" class="bid-section">
+                <input type="number" name="bidAmount" id="bidAmount" placeholder="Enter your bid" min="100" />
+                <button class="place-bid" type="submit" id="placeBidBtn">Place Bid</button>
+            </form>
+
+            <div class="bid-result" id="bidResult"></div>
+
+            <div class="bid-result" id="bidResult">
+                Highest Bidder : JohnDoe123
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.querySelector('.bid-section');
+
+        const currentBidElement = document.getElementById('currentBid');
+        const bidAmountInput = document.getElementById('bidAmount');
+        const bidResultElement = document.getElementById('bidResult');
+
+        let currentBid = parseFloat(currentBidElement.textContent);
+
+        document.getElementById('placeBidBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const bidAmount = parseFloat(bidAmountInput.value);
+
+            if (!bidAmount || bidAmount <= currentBid) {
+                bidResultElement.textContent = `Bid too low! You must bid higher than $${currentBid}.`;
+            } else {
+                bidResultElement.textContent = '';
+                console.log("Submitting form...");
+
+                form.submit();
+            }
+        });
+    </script>
+
+</body>
+</html>
