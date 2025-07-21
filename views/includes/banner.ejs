@@ -1,0 +1,65 @@
+
+    <style>
+
+
+        .banner {
+            /* width: 100vw; */
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(145deg, #1c1c1c, #333); /* Gradient background */
+            color: #ff6ec4;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            
+            animation: bounce 1s infinite alternate; 
+            /* Bounce effect */
+            
+        }
+
+        .banner:hover {
+            transform: scale(1.02); /* Slightly larger on hover */
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .banner::before {
+            /* border: 2px solid red; */
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background-color: rgba(75, 55, 75, 0.306);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 2s infinite; /* Pulse effect */
+        }
+
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+    </style>
+
+<body>
+
+    
+
+    <div class="banner" onclick="location.href='/bid';">
+        <span>🎉 Bidding has started! Click here to participate! 🎉</span>
+    </div>
+
+
+</body>
+

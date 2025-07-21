@@ -1,0 +1,48 @@
+
+res of cloudnary
+{
+  asset_id: '822d477c8f09c5387737ca86457be76e',
+  public_id: 'my-image',
+  version: 1731947155,
+  version_id: '5e06be51998de0ebdb43ce1e426eea3c',
+  signature: '9b62a64a9ad9bca8c9080a6e201542d37cc46e15',
+  width: 2880,
+  height: 1800,
+  format: 'png',
+  resource_type: 'image',
+  created_at: '2024-11-18T15:44:38Z',
+  tags: [],
+  bytes: 2359760,
+  type: 'upload',
+  etag: '8d082cd5b852c148c141412c89611a16',
+  placeholder: false,
+  url: 'http://res.cloudinary.com/don2ndgoj/image/upload/v1731947155/my-image.png',
+  secure_url: 'https://res.cloudinary.com/don2ndgoj/image/upload/v1731947155/my-image.png',
+  asset_folder: '',
+  display_name: 'my-image',
+  overwritten: true,
+  original_filename: '2sxq2',
+  api_key: '786234832985487'
+}
+
+
+multer req.file:
+
+{
+  fieldname: 'image',
+  originalname: 'Screenshot 2024-11-02 at 1.01.38â\x80¯AM.png',
+  encoding: '7bit',
+  mimetype: 'image/png',
+  destination: 'public/uploads/',
+  filename: '6b41a3846bb9c9a89606304ffc290593',
+  path: 'public/uploads/6b41a3846bb9c9a89606304ffc290593',
+  size: 3406276
+}
+
+
+
+
+
+
+
+

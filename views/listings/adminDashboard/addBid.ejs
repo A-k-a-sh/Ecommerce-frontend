@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+
+</head>
+
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+  }
+
+  .bid-container {
+    background: linear-gradient(135deg, #1a1a1a, #333);
+    color: #fff;
+    max-width: 800px;
+    /* margin: 8rem auto 4rem; */
+    margin: 3rem auto;
+    padding: 20px;
+    border-radius: 20px;
+    background: #222;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100vw;
+  }
+
+  #searchBar {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #333;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    margin-bottom: 2rem;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+  }
+
+  h1 {
+    text-align: center;
+    color: #ff6ec4;
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+
+  #bid-products {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 20rem;
+    overflow: auto;
+  }
+
+  /* Product Item */
+  .bid-product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #444;
+    cursor: pointer;
+    transition: background 0.3s;
+    border-radius: 10px;
+    height: fit-content;
+
+  }
+
+  .bid-product:hover,
+  .bid-product.selected {
+    background-color: rgba(52, 55, 54, 0.732);
+  }
+
+  .bid-product img {
+    width: 80px;
+    border-radius: 10px;
+  }
+
+  .item-details {
+    flex: 1;
+    padding: 0 15px;
+  }
+
+  .item-price {
+    color: #ff6ec4;
+    font-size: 1.2em;
+  }
+
+  .view-details {
+    background-color: #ff6ec4;
+    width: 80px;
+    height: 30px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .view-details:hover {
+    background-color: #ff3d85;
+  }
+
+  /* Bid Form */
+  .bid-form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+
+  .bid-form label {
+    margin: 10px 0 5px;
+  }
+
+  .bid-form input[type="number"] {
+    color: #fff;
+    padding-left: 10px;
+    padding: 10px;
+    height: 40px;
+    background-color: #333;
+    border: none;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    outline: none;
+  }
+
+  /* Divider */
+  .border_line {
+    border-bottom: 2px solid #333;
+    margin: 20px 0;
+  }
+
+  /* Submit Button */
+  .checkout-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #42e695;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 20px;
+    transition: background 0.3s;
+    cursor: pointer;
+  }
+
+  .checkout-button:hover {
+    background-color: #30cfd0;
+  }
+
+  @media (max-width: 768px) {
+    .bid-container {
+      max-width: 100vw;
+      padding: 15px;
+    }
+  }
+
+  .container {
+    display: flex;
+    height: 100vh;
+  }
+
+  .sidebar {
+    background-color: #1e1e1e;
+    width: 250px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .sidebar h2 {
+    color: #ff66cc;
+    margin-bottom: 30px;
+  }
+
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .sidebar ul li {
+    padding: 10px 0;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .sidebar ul li.active {
+    color: #ff66cc;
+    font-weight: bold;
+  }
+
+  .content-area {
+    flex-grow: 1;
+    background-color: #000;
+    overflow: auto;
+  }
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+</style>
+
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>Dashboard</h2>
+      <ul>
+        <li class="" onclick="window.location.href = '/admin/dashboard/manageProduct';">Mangage Products</li>
+        <li class="" onclick="window.location.href = '/admin/dashboard/addproduct';" >Add Products</li>
+        <li class="active">Add New Bid</li>
+      </ul>
+    </aside>
+
+    <main class="content-area">
+      <div class="bid-container mt-[8rem] mb-[4rem] mx-auto">
+        <h1 class="text-3xl text-left">Place Bid</h1>
+
+        <!-- Example Cart Items -->
+        <input type="text" id="searchBar" placeholder="Search..." onkeyup="searchItems()" />
+        <div id="bid-products" class="max-h-[50vh] overflow-y-scroll">
+
+          <% allListings.forEach(listing=> { %>
+
+            <div class="bid-product">
+              <img src="<%= listing.image %>" alt="Stylish Sneakers">
+              <div class="item-details">
+                <h3>
+                  <%= listing.product_name %>
+                </h3>
+                <div class="item-price">$<%= listing.price %>.00</div>
+              </div>
+              <button class="view-details">
+                <a href="/listings/<%=listing.product_id%>">View </a>
+              </button>
+            </div>
+
+            <% }) %>
+
+
+        </div>
+
+        <div class="border_line w-full border-b-2 border-[#333] my-4">
+
+        </div>
+
+        <form action="/bid/bidForm" method="post" class="bid-form flex flex-col flex-wrap">
+
+
+          <input type="hidden" readonly name="listingId" id="listingId" value="" required>
+
+          <label for="starting-price">Enter Starting Price</label>
+          <input type="number" name="startingPrice" id=""
+            class="starting-price text-white inline-block pl-2 py-2 max-w-full h-10 rounded-md bg-[#333] outline-none mb-4 mt-2"
+            placeholder="Enter Starting Price" required>
+
+          <label for="time-period">Enter time-period (s)</label>
+          <input type="number" name="timePeriod" id=""
+            class="time-period text-white inline-block pl-2 py-2 max-w-full h-10 rounded-md bg-[#333] outline-none mb-4 mt-2"
+            placeholder="Enter Starting Price" required>
+
+
+          <button type="submit" id="formSubmitButton" class="checkout-button">
+            Place Bid
+          </button>
+
+        </form>
+
+
+      </div>
+
+
+      <script>const searchBar = document.getElementById('searchBar');
+        const itemList = document.getElementById('bid-products');
+        const items = Array.from(itemList.getElementsByClassName('bid-product'));
+
+
+        function searchItems() {
+          const searchTerm = searchBar.value.toLowerCase();
+
+          // Loop through all items and filter them
+          items.forEach(item => {
+            const itemName = item.textContent.toLowerCase();
+
+            // If the item matches the search term, display it, otherwise hide it
+            if (itemName.includes(searchTerm)) {
+              item.style.display = ''; // Show item
+            } else {
+              item.style.display = 'none'; // Hide item
+            }
+          });
+        }
+
+        items.forEach(item => {
+
+          item.addEventListener('click', () => {
+
+            const selectedItems = Array.from(itemList.getElementsByClassName('selected'));
+
+            selectedItems.forEach(selectedItem => {
+              selectedItem.classList.remove('selected');
+
+            });
+
+
+
+
+
+            item.classList.add('selected');
+
+
+
+
+
+            const PreUrl = item.querySelector('.view-details a').getAttribute('href');
+            const id = PreUrl.replace('/listings/', '');
+
+            document.getElementById('listingId').value = id;
+
+          });
+        });
+
+
+        document.querySelector('form').addEventListener('submit', (e) => {
+          e.preventDefault();
+
+          const listingIdField = document.getElementById('listingId');
+          const listingId = listingIdField.value;
+
+          console.log(`Listing ID: ${listingId}`);
+
+          if (listingId === '') {
+            alert('Please select a product');
+          }
+
+          else {
+            e.target.submit();
+          }
+        });
+
+
+      </script>
+    </main>
+  </div>
+
+
+
+
+
+
+
+
+  <script>
+    function loadPage(page, element) {
+      document.getElementById("contentFrame").src = page;
+
+
+      document.querySelectorAll(".sidebar ul li").forEach(li => li.classList.remove("active"));
+      element.classList.add("active");
+    }
+  </script>
+</body>
+
+</html>

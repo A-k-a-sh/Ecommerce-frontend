@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+
+</head>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+  }
+
+  .products-section {
+    padding: 30px;
+  }
+
+  .products-section h2 {
+    color: #ff66cc;
+    margin-bottom: 20px;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 10px;
+    overflow: auto;
+  }
+
+  .product-card {
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+    position: relative;
+  }
+
+  .product-card:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .product-image {
+    position: relative;
+  }
+
+  .product-image img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  /* 3-dot menu overlay */
+  .more-options {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 5;
+  }
+
+  .dots {
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    padding: 5px;
+  }
+
+  /* Dropdown now appears over the image */
+  .dropdown {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background: #333;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    display: none;
+    flex-direction: column;
+    z-index: 10;
+  }
+
+  .dropdown a {
+    color: #fff;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-bottom: 1px solid #444;
+  }
+
+  .dropdown a:last-child {
+    border-bottom: none;
+  }
+
+  .dropdown a:hover {
+    background: #444;
+  }
+
+  .product-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+
+  .container {
+    display: flex;
+    height: 100vh;
+  }
+
+  .sidebar {
+    background-color: #1e1e1e;
+    width: 250px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .sidebar h2 {
+    color: #ff66cc;
+    margin-bottom: 30px;
+  }
+
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .sidebar ul li {
+    padding: 10px 0;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .sidebar ul li.active {
+    color: #ff66cc;
+    font-weight: bold;
+  }
+
+  .content-area {
+    flex-grow: 1;
+    background-color: #000;
+    overflow: auto;
+  }
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+</style>
+
+
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>Dashboard</h2>
+      <ul>
+        <li class="active">Mangage Products</li>
+        <li class="" onclick="window.location.href = '/admin/dashboard/addproduct';">Add Products</li>
+        <li onclick="window.location.href = '/admin/dashboard/addbid';">Add New Bid</li>
+      </ul>
+    </aside>
+
+    <main class="content-area">
+      <h2>All Products</h2>
+      <div class="products-grid">
+
+        <!-- Single Product Card -->
+
+        <% allListings.forEach((listing)=> { %>
+
+          <div class="product-card">
+            <div class="product-image">
+              <img src="<%=listing.image%>" alt="Product">
+              <div class="more-options" onclick="toggleDropdown(this)">
+                <span class="dots">&#8942;</span>
+                <div class="dropdown">
+                  <a href="/listings/<%=listing.product_id%>">Details</a>
+                  <a href="">
+                    <form  action="/listings/<%= listing.product_id%>?_method=DELETE"
+                      method="POST">
+
+                      <button style="background: none; border: none; color:white">
+                        Delete
+                      </button>
+                    </form>
+                  </a>
+                  <a href="/admin/dashboard/editProduct/<%=listing.product_id%>">Edit</a>
+                </div>
+              </div>
+            </div>
+            <div class="product-info">
+              <span class="product-name">
+                <%=listing.product_name%>
+              </span>
+            </div>
+          </div>
+
+          <% }) %>
+
+
+
+      </div>
+      <script>
+        function toggleDropdown(el) {
+          const dropdown = el.querySelector('.dropdown');
+
+          document.querySelectorAll('.dropdown').forEach(menu => {
+            if (menu !== dropdown) menu.style.display = 'none';
+          });
+
+          dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+
+        document.addEventListener('click', function (e) {
+          const isClickInside = e.target.closest('.more-options');
+          if (!isClickInside) {
+            document.querySelectorAll('.dropdown').forEach(menu => menu.style.display = 'none');
+          }
+        });
+      </script>
+    </main>
+  </div>
+
+
+
+
+
+
+
+
+  <script>
+    function loadPage(page, element) {
+      document.getElementById("contentFrame").src = page;
+
+
+      document.querySelectorAll(".sidebar ul li").forEach(li => li.classList.remove("active"));
+      element.classList.add("active");
+    }
+  </script>
+</body>
+
+</html>

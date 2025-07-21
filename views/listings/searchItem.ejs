@@ -1,0 +1,87 @@
+<%- layout('/layouts/boilerplate.ejs') %>
+
+    <style>
+        /* Container */
+        .list-container {
+            margin: 6rem auto;
+            background: linear-gradient(135deg, #1a1a1a, #333);
+            color: #fff;
+            padding: 20px;
+            max-width: 800px;
+            border-radius: 20px;
+            background: #222;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            animation: slide 1s ease-in-out 1 forwards;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #444;
+            margin-bottom: 15px;
+        }
+
+        .item img {
+            width: 80px;
+            border-radius: 10px;
+        }
+
+        .item-details {
+            flex: 1;
+            padding: 0 15px;
+        }
+
+        .item-title {
+            font-size: 1.2rem;
+            color: #ff6ec4;
+            margin: 0;
+        }
+
+        .item-description {
+            color: #ccc;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        .action-button {
+            background-color: #42e695;
+            color: #fff;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .action-button:hover {
+            background-color: #30cfd0;
+        }
+    </style>
+<body>
+
+    <div class="list-container">
+        <!-- Example Item -->
+        <div class="item">
+            <img src="https://via.placeholder.com/80" alt="Item Image">
+            <div class="item-details">
+                <h3 class="item-title">Item Title</h3>
+                <p class="item-description">This is a brief description of the item.</p>
+            </div>
+            <button class="action-button">Action</button>
+        </div>
+
+        <!-- Duplicate for more items -->
+        <div class="item">
+            <img src="https://via.placeholder.com/80" alt="Item Image">
+            <div class="item-details">
+                <h3 class="item-title">Another Item</h3>
+                <p class="item-description">Brief description of another item.</p>
+            </div>
+            <button class="action-button">Action</button>
+        </div>
+    </div>
+
+</body>
+

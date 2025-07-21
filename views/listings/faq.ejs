@@ -1,0 +1,151 @@
+<%- layout('/layouts/boilerplate.ejs') %>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #0e0e0e; /* Matching your dark-themed color scheme */
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            margin-top: 6rem;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #181819; /* A darker shade for contrast */
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            text-align: center;
+            color: #dc55e0;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+
+        .faq {
+            border-bottom: 1px solid #444;
+            padding: 15px 0;
+            overflow: hidden;
+        }
+
+        .faq:last-child {
+            border: none;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .faq-question:hover {
+            color: #00d4ff; /* Accent color */
+        }
+
+        .faq-question span {
+            font-size: 1.5rem;
+            transform: rotate(0);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.active span {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.5s ease;
+            opacity: 0;
+        }
+
+        .faq-answer.visible {
+            max-height: 200px; /* Adjust based on your content */
+            opacity: 1;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqs = document.querySelectorAll('.faq-question');
+            faqs.forEach(question => {
+                question.addEventListener('click', () => {
+                    const answer = question.nextElementSibling;
+                    const icon = question.querySelector('span');
+
+                    if (answer.classList.contains('visible')) {
+                        answer.classList.remove('visible');
+                        question.classList.remove('active');
+                    } else {
+                        document.querySelectorAll('.faq-answer').forEach(ans => ans.classList.remove('visible'));
+                        document.querySelectorAll('.faq-question').forEach(q => q.classList.remove('active'));
+                        answer.classList.add('visible');
+                        question.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+
+<body>
+    <div class="faq-container">
+        <h1>Frequently Asked Questions</h1>
+        
+        <div class="faq">
+            <div class="faq-question">
+                <p>What is this website about?</p>
+                <span>&#9660;</span>
+            </div>
+            <div class="faq-answer">
+                <p>This website is an e-commerce platform where you can buy latest trends and unique products.</p>
+            </div>
+        </div>
+        
+        <div class="faq">
+            <div class="faq-question">
+                <p>How do I view my invoices?</p>
+                <span>&#9660;</span>
+            </div>
+            <div class="faq-answer">
+                <p>Log in to your account and navigate to the "Invoices" section under the dashboard.</p>
+            </div>
+        </div>
+        
+        <div class="faq">
+            <div class="faq-question">
+                <p>Can I download my invoices as PDFs?</p>
+                <span>&#9660;</span>
+            </div>
+            <div class="faq-answer">
+                <p>Yes, click the "Download as PDF" button on the invoice page to download it.</p>
+            </div>
+        </div>
+        
+        <div class="faq">
+            <div class="faq-question">
+                <p>What payment methods are supported?</p>
+                <span>&#9660;</span>
+            </div>
+            <div class="faq-answer">
+                <p>We support credit/debit cards, online banking, and digital wallets.</p>
+            </div>
+        </div>
+        
+        <div class="faq">
+            <div class="faq-question">
+                <p>How can I contact customer support?</p>
+                <span>&#9660;</span>
+            </div>
+            <div class="faq-answer">
+                <p>Use the "Contact Us" page to reach us. We’re available 24/7 to assist you.</p>
+            </div>
+        </div>
+    </div>
+</body>
+

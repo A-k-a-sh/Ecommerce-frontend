@@ -1,0 +1,144 @@
+<%- layout('/layouts/boilerplate.ejs') %>
+    <style>
+        /* Container */
+        .cart-container {
+            background: linear-gradient(135deg, #1a1a1a, #333);
+            color: #fff;
+            padding: 20px;
+            max-width: 800px;
+            padding: 20px;
+            border-radius: 20px;
+            background: #222;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            animation: slide 1s ease-in-out 1 forwards;
+        }
+
+        @keyframes  slide{
+            0% {
+                opacity: 0;
+                transform: translateX(130%);
+            }
+
+            60% {
+                opacity: 1;
+                transform: translateX(-30px);
+            }
+
+            80% {
+                transform: translateX(10px);
+            }
+
+            100% {
+                opacity: 1;
+                filter: blur(0px);
+                transform: translateX(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #ff6ec4;
+            margin-bottom: 20px;
+        }
+
+        /* Cart Item */
+        .cart-item {
+            /* border: 2px solid red; */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #444;
+        }
+
+        .cart-item img {
+            width: 80px;
+            border-radius: 10px;
+        }
+
+        .item-details {
+            /* border: 2px solid rgb(9, 224, 138); */
+            flex: 1;
+            padding: 0 15px;
+        }
+
+        .item-price {
+            color: #ff6ec4;
+            font-size: 1.2em;
+        }
+
+        .view-button {
+
+            background-color: #42e695;
+            width: 80px;
+            height: 30px;
+            color: #fff;
+            border: none;
+            /* padding: 2px 10px; */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .view-button:hover {
+            background-color: #30cfd0;
+        }
+
+        /* Total Price */
+    </style>
+
+    <body>
+
+        <div class="cart-container mt-[8rem] mb-[4rem] mx-auto">
+            <h1 class="text-3xl text-left">Search Result for : <%= searchQuery %> </h1>
+
+            <!-- Example Cart Items -->
+
+
+
+            <% if (products.length) { %>
+
+                <% products.forEach(product => { %>
+                
+                    <div class="cart-item">
+                        <img src="<%= product.image %>" alt="Comfortable Shirt">
+                        <div class="item-details">
+                            <h3>
+                                <%= product.product_name %>
+                            </h3>
+                            <div class="item-price">
+                                $<%= product.price %>
+                            </div>
+                        </div>
+                        <a href="/listings/<%= product.product_id %>">
+                            <button class="view-button">View</button>
+                        </a>
+                    </div>
+    
+                <% }) %>
+             
+            <% } else {%>
+            
+            
+
+                <div>
+                    Nothing found
+                </div>
+
+                <%} %>
+
+            
+           
+        </div>
+
+    </body>
+
+
+
+
+
+
+
+
+  

@@ -1,0 +1,198 @@
+<%- include('../includes/flash.ejs') %>
+
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Easy Buy || Sign Up</title>
+        <style>
+            /* Full-screen animated background */
+
+            body {
+                width: 100vw;
+                height: 100vh;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                font-family: Arial, sans-serif;
+                color: #fff;
+                /* overflow: hidden; */
+                background-color: #111;
+                /* Dark background for the body */
+            }
+
+
+
+            /* Container for forms */
+            .form-container {
+                position: relative;
+                z-index: 2;
+                background: rgba(0, 0, 0, 0.7);
+                padding: 40px;
+                border-radius: 10px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+                max-width: 400px;
+                text-align: center;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.5s ease, transform 0.5s ease;
+            }
+
+            /* Show the form */
+            .form-container.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .form-container h1 {
+                font-size: 2.5em;
+                margin-bottom: 10px;
+            }
+
+            .form-container p {
+                margin-bottom: 20px;
+            }
+
+            /* Form styling */
+            .form {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .form input {
+                padding: 15px;
+                margin: 10px 0;
+                border: none;
+                border-radius: 5px;
+                font-size: 1em;
+                background-color: #222;
+                /* Dark background for input fields */
+                color: #fff;
+                /* White text for input fields */
+                transition: border 0.3s, background-color 0.3s;
+            }
+
+            .form input:focus {
+                outline: none;
+                border: 2px solid #42e695;
+                background-color: #333;
+                /* Darker background on focus */
+            }
+
+            .form-button {
+                padding: 15px;
+                background: #ff6ec4;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                font-size: 1.1em;
+                cursor: pointer;
+                transition: background 0.3s;
+            }
+
+            .form-button:hover {
+                background: #ff3b81;
+            }
+
+            .toggle-text {
+                margin-top: 15px;
+                font-size: 0.9em;
+            }
+
+            .toggle-text a {
+                color: #42e695;
+                text-decoration: none;
+            }
+
+            .toggle-text a:hover {
+                text-decoration: underline;
+            }
+
+            /* Fade-in animation for text */
+            @keyframes fadeIn {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .flashMsg {
+                position: absolute;
+                top: 20px;
+                right: 0;
+                z-index: 100;
+                padding: 0 1rem;
+                background-color: rgba(81, 220, 220, 0.841);
+                color: #fff;
+                border-radius: 0.125rem;
+                /* display: none; */
+            }
+        </style>
+    </head>
+
+    <body>
+
+
+
+        <!-- Canvas for animated background -->
+        <canvas id="background-canvas"></canvas>
+
+        <!-- Form Container -->
+
+
+        <div class="form-container" id="formContainer">
+
+            <h1 id="formTitle">Welcome Back In Admin login</h1>
+            <p id="formSubtitle">Please log in to continue.</p>
+            <form id="form" class="form" action="/admin/login" method="POST">
+                <div id="formInputs" style="display: flex; flex-direction: column;">
+                    <input type="email" name="email" placeholder="email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="form-button">Log In</button>
+            </form>
+        </div>
+
+        <script>
+            // Set up canvas for animated background
+            
+            // Toggle between login and registration forms
+            const formContainer = document.getElementById("formContainer");
+            const form = document.getElementById("form");
+            const formTitle = document.getElementById("formTitle");
+            const formSubtitle = document.getElementById("formSubtitle");
+           
+            const formInputs = document.getElementById("formInputs");
+
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault(); // Prevent default form submission
+                
+                form.submit();
+
+                
+            });
+
+            // Initial show for form container
+            setTimeout(() => {
+
+                formContainer.classList.add('show');
+            }, 100); // Delay before showing
+
+
+
+
+
+        </script>
+    </body>
+
+    </html>

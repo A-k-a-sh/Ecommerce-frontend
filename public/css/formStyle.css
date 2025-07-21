@@ -1,0 +1,83 @@
+input{
+    height: 2.3rem;
+    outline: none;
+    border-bottom: 1px solid gray;
+}
+input[type='text'] , input[type = 'number']{
+    padding-left: 0.5rem;
+}
+
+
+input[type="file"] {
+    position: relative;
+   
+}
+
+input::file-selector-button {
+    content: 'hhell';
+font-weight: bold;
+color: white;
+/* padding: 0.5em; */
+border: none;
+/* border-radius: 3px; */
+background-color: transparent;
+position: absolute;
+top: 0;
+bottom: 0;
+
+font-size: 0.5rem;
+}
+
+
+
+
+
+label , button{
+    font-weight:700;
+}
+
+.textarea{
+    /* height: 20rem; */
+    padding-left: 0.5rem;
+    outline: none;
+    border-bottom: 1px solid rgba(157, 156, 156, 0.791);
+    height: 5rem;
+}
+
+.form{
+    animation: pop-in 0.8s ease forwards; 
+    opacity: 0;
+}
+
+@keyframes pop-in {
+    0% , 10% {
+        transform: scale(0.8);
+    }
+    100%{
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.button_in_add_listing{
+    animation-name: fadeInUpBig;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-delay: 0.2s;
+
+}
+
+
+@keyframes fadeInUpBig {
+    0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 2000px, 0);
+    transform: translate3d(0, 2000px, 0);
+    }
+    100% {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+    }
+} 
+

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Purchase History</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: black;
+      display: flex;
+      min-height: 100vh;
+      overflow: auto;
+    }
+
+    .active {
+      background-color: #ff6ec4;
+    }
+
+    .sidebar {
+      /* border: 2px  red; */
+      
+      background: linear-gradient(135deg, #1a1a1a, #333);
+      color: #fff;
+      gap: 20px;
+      border-radius: 20px;
+      padding: 30px 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      width: 250px;
+    }
+
+    .sidebar h2 {
+      font-size: 24px;
+      margin-bottom: 30px;
+      color: #ff6ec4;
+    }
+
+    .sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 15px 0;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .sidebar a:hover {
+      color: #007BFF;
+    }
+
+    .main {
+      flex: 1;
+      padding: 40px;
+      color: white;
+    }
+
+    .main h2 {
+      color: #ff6ec4;
+      margin-bottom: 20px;
+    }
+
+    .cards {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+    }
+
+    .card {
+      padding: 20px;
+      width: 200px;
+      height: fit-content;
+      border-radius: 20px;
+      background: #222;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      position: relative;
+      animation: fadeIn 1s ease forwards;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(100px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card img {
+      max-width: 100%;
+      max-height: 200px;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+      object-position: center;
+      object-fit: cover;
+    }
+
+    .card p {
+      margin: 5px 0;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .popup-content {
+      background: #222;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      text-align: center;
+      color: white;
+    }
+
+    .popup-content h2 {
+      margin-bottom: 20px;
+      color: #ff6ec4;
+    }
+
+    .popup-content button {
+      padding: 10px 16px;
+      margin: 0 10px;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .yes-btn {
+      background-color: #dc3545;
+    }
+
+    .yes-btn:hover {
+      background-color: #a71d2a;
+    }
+
+    .no-btn {
+      background-color: #28a745;
+    }
+
+    .no-btn:hover {
+      background-color: #1e7e34;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Dashboard</h2>
+    <a href="/listings" class="">Home</a>
+    <a href="user" class="">Profile</a>
+    <a href="setPassword" class="">Set Password</a>
+    <a href="purchasehistory" class="active">Purchase History</a>
+    <a onclick="showPopup()">Logout</a>
+  </div>
+
+  <div class="main">
+    <h2>Purchase History</h2>
+    <div class="cards">
+
+      <% allproducts.forEach(product => { %>
+        <div class="card cursor-pointer" onclick="window.location.href='/listings/<%= product.product_id %>'">
+          <div class="product-image md:h-[400px] h-[200px] cursor-pointer">
+            <img class="normal_img overflow-hidden object-cover object-center w-full h-fit md:h-full"
+              src="<%= product.image %>" alt="">
+          </div>
+          <p><strong>Product:</strong> <%= product.product_name %></p>
+          
+          <p><strong>Price:</strong> $<%= product.price %></p>
+        </div>
+        <% }) %>
+
+          
+    </div>
+  </div>
+  <!-- Logout Confirmation Popup -->
+  <div class="popup" id="logoutPopup">
+    <div class="popup-content">
+      <h2>Are you sure you want to log out?</h2>
+      <button class="yes-btn" onclick="logoutConfirmed()">Yes</button>
+      <button class="no-btn" onclick="hidePopup()">No</button>
+    </div>
+  </div>
+
+  <script>
+    function showPopup() {
+      document.getElementById('logoutPopup').style.display = 'flex';
+    }
+
+    function hidePopup() {
+      document.getElementById('logoutPopup').style.display = 'none';
+    }
+
+    function logoutConfirmed() {
+      // Redirect to login or homepage
+      window.location.href = 'login.html'; // Change this as needed
+    }
+  </script>
+
+</body>
+
+</html>

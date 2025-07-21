@@ -1,0 +1,453 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>User Profile - E-commerce</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: black;
+      display: flex;
+      min-height: 100vh;
+      overflow: auto;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: linear-gradient(135deg, #1a1a1a, #333);
+      color: #fff;
+      gap: 20px;
+      border-radius: 20px;
+      padding: 30px 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .active {
+      background-color: #ff6ec4;
+    }
+
+    .sidebar h2 {
+      font-size: 24px;
+      margin-bottom: 30px;
+      color: #ff6ec4;
+    }
+
+    .sidebar a {
+      display: block;
+      cursor: pointer;
+      color: white;
+      text-decoration: none;
+      margin: 15px 0;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+
+    .sidebar a:hover {
+      color: #007BFF;
+    }
+
+    .main {
+      flex: 1;
+      padding: 40px;
+      color: white;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(100px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .header h1 {
+      font-size: 24px;
+      color: #ff6ec4;
+      margin-bottom: 8px;
+    }
+
+    .info-section {
+      margin-top: 30px;
+    }
+
+    .info {
+      background: #222;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .info span,
+    .info input {
+      font-weight: bold;
+      font-size: 1rem;
+      padding: 5px 10px;
+      background: #ccc;
+      border-radius: 5px;
+    }
+
+    .info input {
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    .buttons button {
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 12px;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .buttons button:hover {
+      background: #0056b3;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .popup-content {
+      background: #222;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      text-align: center;
+      color: white;
+    }
+
+    .popup-content h2 {
+      margin-bottom: 20px;
+      color: #ff6ec4;
+    }
+
+    .popup-content button {
+      padding: 10px 16px;
+      margin: 0 10px;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .yes-btn {
+      background-color: #dc3545;
+    }
+
+    .yes-btn:hover {
+      background-color: #a71d2a;
+    }
+
+    .no-btn {
+      background-color: #28a745;
+    }
+
+    .no-btn:hover {
+      background-color: #1e7e34;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Dashboard</h2>
+    <a href="/listings" class="">Home</a>
+    <a href="user" class="active">Profile</a>
+    <a href="setPassword">Set Password</a>
+    <a href="purchasehistory">Purchase History</a>
+    <a onclick="showPopup()">Logout</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <div class="header">
+      <h1>Welcome, User</h1>
+      <p>This is your profile page. You can update your information below.</p>
+    </div>
+
+    <div class="info-section">
+      <div class="header">
+        <h1>User Name:</h1>
+      </div>
+
+      <div class="info">
+        <div id="nameField">
+          <span id="nameText">
+            <%= user.customer_name %>
+          </span>
+        </div>
+
+        <div class="buttons">
+          <button onclick="enableEditName()">
+            Update
+          </button>
+
+          <button onclick="saveName()">
+            Save
+          </button>
+        </div>
+      </div>
+
+      <script>
+        function enableEditName() {
+          const nameField = document.getElementById("nameField");
+          const currentName = document.getElementById("nameText").innerText;
+          nameField.innerHTML = `<input type="text" id="nameInput" value="${currentName}">`;
+        }
+
+        function saveName() {
+
+
+
+          const nameInput = document.getElementById("nameInput");
+          if (!nameInput) return;
+
+          const updatedName = nameInput.value;
+
+          fetch('/profile/updateName', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              updatedName: nameInput.value
+            })
+          })
+            .then(response => response.json())
+            .then(data => {
+              console.log('Name updated successfully:', data);
+            })
+            .catch(error => {
+              console.error('Error updating name:', error);
+            });
+
+
+
+          console.log("Saving to backend:", updatedName);
+
+          const nameField = document.getElementById("nameField");
+          nameField.innerHTML = `<span id="nameText">${updatedName}</span>`;
+        }
+      </script>
+
+      <div class="header">
+        <h1>User Phone No:</h1>
+      </div>
+
+      <div class="info">
+        <div id="noField">
+          <span id="number">
+            <% if (user.phone_number) { %>
+              <%= user.phone_number %>
+                <% } %>
+                  <% if (!user.phone_number) { %>
+                    Not Available
+                    <% } %>
+
+          </span>
+        </div>
+
+        <div class="buttons">
+          <button onclick="enableEditPhone()">
+            Update
+          </button>
+
+          <button onclick="savePhone()">
+            Save
+          </button>
+        </div>
+      </div>
+
+      <script>
+
+        function enableEditPhone() {
+          const noField = document.getElementById("noField");
+          const currentNumber = document.getElementById("number").innerText;
+          noField.innerHTML = `<input type="text" id="noInput" value="${currentNumber}">`;
+        }
+
+        function savePhone() {
+          const noInput = document.getElementById("noInput");
+          if (!noInput) return;
+
+          const updatedNumber = noInput.value;
+
+          if (!/^\d{11}$/.test(updatedNumber)) {
+            alert("Please enter a valid 11-digit phone number");
+            return;
+          }
+          fetch('/profile/updateNumber', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              updatedNumber: noInput.value
+            })
+          })
+            .then(response => response.json())
+            .then(data => {
+              console.log('Number updated successfully:', data);
+            })
+            .catch(error => {
+              console.error('Error updating number:', error);
+            });
+
+          console.log("Saving to backend:", updatedNumber);
+
+          const noField = document.getElementById("noField");
+          noField.innerHTML = `<span id="nameText">${updatedNumber}</span>`;
+        }
+      </script>
+
+      <div class="header">
+        <h1>User Address:</h1>
+      </div>
+
+      <div class="info">
+        <div id="addressField">
+          <span id="addressText">
+            <% if (user.address) { %>
+              <%= user.address %>
+                <% } %>
+                  <% if (!user.address) { %>
+                    Not Available
+                    <% } %>
+          </span>
+        </div>
+
+        <div class="buttons">
+          <button onclick="enableEditAddress()">
+            Update
+          </button>
+
+          <button onclick="saveAddress()">
+            Save
+          </button>
+        </div>
+      </div>
+
+      <script>
+
+        function enableEditAddress() {
+          const noField = document.getElementById("addressField");
+          const currentNumber = document.getElementById("addressText").innerText;
+          noField.innerHTML = `<input type="text" id="addressInput" value="${currentNumber}">`;
+        }
+
+        function saveAddress() {
+          const noInput = document.getElementById("addressInput");
+          if (!noInput) return;
+
+          const updatedNumber = noInput.value;
+
+          fetch('/profile/updateAddress', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              updatedAddress: noInput.value
+            })
+          })
+            .then(response => response.json())
+            .then(data => {
+              console.log('Address updated successfully:', data);
+            })
+            .catch(error => {
+              console.error('Error updating address:', error);
+            });
+
+          console.log("Saving to backend:", updatedNumber);
+
+          const noField = document.getElementById("addressField");
+          noField.innerHTML = `<span id="addressText">${updatedNumber}</span>`;
+        }
+      </script>
+
+
+
+      <div class="header">
+        <h1>User Email:</h1>
+      </div>
+
+      <div class="info">
+        <div id="emailField">
+          <span id="emailText">
+            <%= user.email %>
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Logout Confirmation Popup -->
+  <div class="popup" id="logoutPopup">
+    <div class="popup-content">
+      <h2>Are you sure you want to log out?</h2>
+      <button class="yes-btn" onclick="logoutConfirmed()">Yes</button>
+      <button class="no-btn" onclick="hidePopup()">No</button>
+    </div>
+  </div>
+
+  <script>
+    function showPopup() {
+      document.getElementById('logoutPopup').style.display = 'flex';
+    }
+
+    function hidePopup() {
+      document.getElementById('logoutPopup').style.display = 'none';
+    }
+
+    function logoutConfirmed() {
+      fetch('/loginSignup/logout', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      // Redirect to login or homepage
+      window.location.href = '/listings'; // Change this as needed
+    }
+  </script>
+
+</body>
+
+</html>

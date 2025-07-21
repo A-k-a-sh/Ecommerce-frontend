@@ -1,0 +1,56 @@
+<%- layout('/layouts/boilerplate.ejs') %>
+  <link rel="stylesheet" href="/css/indexStyle.css">
+  <%- include('../includes/flash.ejs') %>
+
+
+<body>
+    
+    <div id="allProducts" class="w-max-[950px] flex flex-wrap flex-row gap-3 containerr justify-center  items-center mt-[6rem] mb-[4rem] ">
+        <% products.sort((a, b) => b.price - a.price).forEach((listing)=> { %>
+          <div class="product-card m-5 box ">
+            <!-- Product Image -->
+            <div class="product-image">
+              <img src="<%=listing.image%>" alt="">
+            </div>
+
+            <!-- Product Information -->
+            <div class="product-info">
+              <h2>
+                <%=listing.product_name%>
+              </h2>
+              <p>
+                <%=listing.description%>
+              </p>
+              <div class="price-tag">$<%=listing.price%>
+              </div>
+              <button class="add-to-cart">
+                <a href="/listings/<%=listing.product_id%>">View details</a>
+              </button>
+            </div>
+          </div>
+          <% }) %>
+      </div>
+
+
+      <script>
+        const boxes = document.querySelectorAll('.box');
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            } else {
+              entry.target.classList.remove('visible'); // Remove class when box is out of view
+            }
+          });
+        }, {
+          threshold: 0.3
+        });
+
+        boxes.forEach(box => {
+          observer.observe(box);
+        });
+
+      </script>
+
+</body>

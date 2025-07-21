@@ -1,0 +1,76 @@
+<style>
+    .flashMsg {
+        animation: slide 0.5s ease-out 1 forwards;
+        opacity: 0;
+        /* position: relative; */
+    }
+
+    .flashMsg::after {
+        content: "";
+        position: absolute;
+        height: 2px;
+        width: 100%;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: aqua;
+        animation: slideBar 5s ease-out 1 forwards;;
+        
+    }
+
+    @keyframes slideBar {
+        to{
+            width: 0;
+        }
+    }
+
+    @keyframes slide {
+        0% {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateX(-5%);
+            opacity: 1;
+        }
+    }
+</style>
+
+
+
+<% if (successMsg && successMsg.length ) { %>
+    <div
+        class="flashMsg  fixed top-20 right-0  z-40 text-right  duration-150   bg-cyan-900 text-white rounded-sm block  px-6 py-2">
+        <p>
+            <%= successMsg %>
+        </p>
+    </div>
+    <% } %>
+
+
+
+        <% if (errorMsg && errorMsg.length) { %>
+            <div
+                class="flashMsg  absolute top-20 right-0  z-40 text-right  duration-150 ani  bg-cyan-900 text-white rounded-sm block  px-6 py-2">
+                <p>
+                    <%= errorMsg %>
+                </p>
+            </div>
+            <% } %>
+
+<script>
+    let msg = document.querySelector('.flashMsg');
+    setTimeout(() => {
+        msg.classList.add('hidden');
+    }, 5000);
+
+    msg.addEventListener('mouseover', () => {
+        msg.classList.remove('hidden');
+    })
+
+    msg.addEventListener('mouseout', () => {
+        msg.classList.add('hidden');
+    })
+
+</script>

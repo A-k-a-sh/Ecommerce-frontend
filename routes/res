@@ -1,0 +1,21 @@
+
+req.user = {
+  customer_id: 'ed07ca3c-6950-4882-a9d8-4352bc430736',
+  customer_name: 'abc',
+  email: 'abc@gmail.com',
+  password: '$2b$10$35DffxG4MpOGHqq.U.p1IeCvjiIsJ/Yz1OLYYIekHPCLwPENM9416',
+  type: 'customer'
+}
+
+
+console.log('req came to add a listing');
+        //console.log(req.file);
+        let { product_name, description, image , price, features, category } = req.body;
+        console.log(req.body) =
+         {
+  product_name: 'abc',
+  description: 'dfas',
+  price: '213',
+  features: 'a\r\nb\r\nc',
+  category: 'Shirt'
+}

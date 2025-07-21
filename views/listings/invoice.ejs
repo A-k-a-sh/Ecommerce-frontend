@@ -1,0 +1,150 @@
+<%- layout('/layouts/boilerplate.ejs') %>
+
+<%- include('../includes/flash.ejs') %>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+<style>
+        body {
+            background-color: #121111bc;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .invoice-container {
+            background: linear-gradient(135deg, #1a1a1a, #333);
+            color: #fff;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0rem auto;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            /* border: 2px solid red; */
+            margin-top: 30rem;
+        }
+
+        h1 {
+            text-align: center;
+            color: #42e695;
+            margin-bottom: 20px;
+        }
+
+        .invoice-details {
+            margin-bottom: 20px;
+        }
+
+        .invoice-details h3 {
+            margin: 0;
+        }
+
+        .invoice-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #444;
+        }
+
+        .item-total {
+            color: #ff6ec4;
+            font-weight: bold;
+        }
+
+        .total-amount {
+            font-size: 1.5em;
+            text-align: right;
+            margin-top: 20px;
+            color: #42e695;
+        }
+
+        .download-btn {
+            display: block;
+            margin : 20px 0;
+            /* margin: 20px auto; */
+            padding: 10px 20px;
+            background-color: #42e695;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            text-align: center;
+        }
+
+        .download-btn:hover {
+            background-color: #30cfd0;
+        }
+
+        @media screen and (max-width: 600px) {
+            .invoice-container {
+                width: 90%;
+                padding: 10px;
+                border-radius: 10px;
+                margin-top: 5rem;
+
+            }
+
+            body {
+                display: block;
+                margin-top: 5rem;
+                background-color: #121111bc;
+                /* overflow: hidden; */
+
+            }
+        }
+</style>
+
+
+
+
+<body>
+    
+
+    <div class="invoice-container mt-[6rem] mb-[4rem]" id="invoice">
+        <h1>Invoice</h1>
+        <div class="invoice-details">
+            <h3>Customer: <%= customerName %></h3>
+            <h3>Payment ID: <%= items[0]?.payment_id || 'N/A' %></h3>
+        </div>
+    
+        <% items.forEach(item => { %>
+            <div class="invoice-item">
+                <div><%= item.product_name %></div>
+                <div>$<%= item.price %> x <%= item.quantity %></div>
+                <div class="item-total">$<%= item.total_price %></div>
+            </div>
+        <% }) %>
+    
+        <div class="invoice-item">
+            <div>Delivery Fee</div>
+            <div class="item-total">$<%= deliveryFee %></div>
+        </div>
+    
+        <div class="total-amount">Total: $<%= totalAmount %></div>
+    </div>
+    
+    <div style="display: flex;justify-content: space-around; align-items: center;">
+        <button class="download-btn" id="download-btn">Download as PDF</button>
+        <a href="/listings#allProducts">
+            <button class="download-btn" style="background-color: aqua; color: black;" >Continue Shopping</button>
+        </a>
+    </div>
+
+
+    <script>
+        document.getElementById('download-btn').addEventListener('click', () => {
+      const content = document.getElementById('invoice');
+      const options = {
+        margin: 10,
+        filename: 'page-content.pdf',
+        html2canvas: { scale: 2 },
+        jsPDF: { orientation: 'portrait' }
+      };
+      html2pdf().set(options).from(content).save();
+    });
+    </script>
+
+</body>

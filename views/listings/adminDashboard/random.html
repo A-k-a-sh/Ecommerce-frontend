@@ -1,0 +1,214 @@
+<style>
+    /* Container */
+    .add-product-container {
+        width: 95%;
+        max-width: 800px;
+        margin: 6rem auto 2rem;
+        padding: 2rem;
+        background: rgba(128, 128, 128, 0.1);
+        backdrop-filter: blur(8px);
+        font-family: serif;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .add-product-container h3 {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #ff6ec4;
+        margin-bottom: 1.5rem;
+        text-align: left;
+    }
+
+    /* Form */
+    .form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin: 1rem 0;
+        animation: pop-in 0.8s ease forwards;
+        opacity: 0;
+    }
+
+    .form label {
+        font-weight: bold;
+        color: #32cd32;
+        /* green */
+    }
+
+    .form input,
+    .form textarea,
+    .form select {
+        background-color: #444;
+        color: white;
+        border: 1px solid #666;
+        border-radius: 6px;
+        padding: 10px;
+        font-size: 1rem;
+        outline: none;
+    }
+
+    .form input[type="file"] {
+        position: relative;
+        padding: 6px;
+    }
+
+    input::file-selector-button {
+        font-weight: bold;
+        color: white;
+        background-color: transparent;
+        border: none;
+        font-size: 0.8rem;
+    }
+
+    .textarea {
+        height: 5rem;
+        padding-left: 0.5rem;
+        resize: vertical;
+    }
+
+    select {
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 1rem;
+    }
+
+    /* Submit Button */
+    .button_in_add_listing {
+        background-color: #1e90ff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        width: 12rem;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s ease;
+        animation: fadeInUpBig 1s both 0.2s;
+    }
+
+    .button_in_add_listing:hover {
+        background-color: #3aa0ff;
+    }
+
+    .button_in_add_listing:active {
+        background-color: #0066cc;
+    }
+
+    @keyframes pop-in {
+
+        0%,
+        10% {
+            transform: scale(0.8);
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeInUpBig {
+        0% {
+            opacity: 0;
+            transform: translateY(2000px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (min-width: 768px) {
+        .add-product-container {
+            width: 65%;
+            padding: 2rem;
+        }
+    }
+</style>
+
+
+
+
+<body>
+
+    <div class="add-product-container">
+        <h3 class="add_new_listing">Add New Product</h3>
+
+        <form action="/listings" method="POST" class="form" enctype="multipart/form-data">
+            <label for="title">Product Name</label>
+            <input type="text" name="product_name" id="title" placeholder="Enter title">
+
+            <label for="description">Description</label>
+            <textarea class="textarea" name="description" id="description" placeholder="Enter description"></textarea>
+
+            <label for="image">Upload Image</label>
+            <input type="file" name="image" id="image">
+
+            <label for="price">Price</label>
+            <input type="number" name="price" id="price" placeholder="Enter price">
+
+            <label for="features">Features</label>
+            <textarea class="textarea" name="features" id="features" placeholder="Enter features"></textarea>
+
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+                <option value="Shoes">Shoes</option>
+                <option value="Jeans">Jeans</option>
+                <option value="Shirt">Shirt</option>
+                <option value="Watch">Watch</option>
+                <option value="Belts">Belts</option>
+            </select>
+
+            <button type="submit" class="button_in_add_listing" id="button">Submit</button>
+        </form>
+    </div>
+
+
+
+
+    <script>
+        let inputFields = document.querySelectorAll('input[type="text"], textarea, input[type="number"] , input[type="file"]');
+        let form = document.querySelector('form');
+
+        form.addEventListener('submit', (e) => {
+            let isValid = true;
+
+            e.preventDefault();
+
+            inputFields.forEach(input => {
+                const inputName = input.name;
+                const value = input.value.trim();
+                const isPriceField = input.name === 'price';
+                const priceValue = parseFloat(value);
+
+                // Only validate fields with a name attribute
+                if (inputName && ((inputName !== 'image' && value === '') ||
+                    (isPriceField && (priceValue < 0 || isNaN(priceValue))))) {
+                    console.log(`Invalid field: ${inputName}, value: ${value}`);
+                    input.classList.add('border-b-1', 'border-b-red-500');
+                    isValid = false;
+                } else if (inputName) {
+                    // Remove error styling if validation passes
+                    input.classList.remove('border-b-1', 'border-b-red-500');
+                }
+            });
+
+            console.log(`Form valid status: ${isValid}`);
+
+            // Prevent form submission if validation fails
+
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+            else {
+                form.submit();
+            }
+
+        });
+
+    </script>
+
+</body>

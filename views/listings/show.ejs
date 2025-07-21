@@ -1,0 +1,279 @@
+<%- layout('/layouts/boilerplate.ejs') %>
+
+    <link rel="stylesheet" href="/css/showPageStyle.css">
+    <%- include('../includes/flash.ejs') %>
+
+
+        <body class="">
+
+
+            <div class="product-container mt-[6rem]">
+                <div class="product-details-container">
+                    <!-- Product Image -->
+                    <div class="product-image md:h-[400px] h-[200px] cursor-pointer   ">
+                        <img class="normal_img overflow-hidden object-cover object-center w-full h-fit md:h-full"
+                            src="<%= listing.image %>" alt="Product Image">
+                    </div>
+
+
+
+                    <!-- Product Information -->
+                    <div class="product-info">
+
+                        <h1>
+                            <%= listing.product_name %>
+                        </h1>
+                        <p>
+                            <%= listing.description %>
+                        </p>
+
+                        <h2>Features:</h2>
+                        <ul class="features-list">
+                            <% listing.features.split('\n').forEach(feature=> { %>
+                                <li>
+                                    <%= feature %>
+                                </li>
+                                <% }); %>
+                        </ul>
+
+
+
+                        <div class="price-tag">$<%= listing.price %>
+                        </div>
+
+                        <!-- Back to Products Button -->
+
+
+
+
+
+                        <form class="my-4 flex flex-row gap-x-6 items-center" action="/cart/<%= listing.product_id %>"
+                            method="post">
+                            <div class="input-container">
+                                <div class="text-2xl px-3 bg-slate-600 inline-block rounded-lg cursor-pointer"
+                                    data-action="decrease">-
+                                </div>
+
+                                <input type="text" readonly value="1" name="quantity" id="quantity"
+                                    class="w-[4rem] h-[2rem] text-center text-black rounded-md -mt-5 text-[1.2rem] font-bold">
+
+                                <div class="text-2xl px-3 bg-slate-600 inline-block rounded-lg cursor-pointer"
+                                    data-action="increase">+
+                                </div>
+                            </div>
+                            <button type="submit" class="back-button">
+                                Add to cart
+                            </button>
+                        </form>
+
+
+
+                        <% if (currentUser && currentUser.type.toString()==="admin" ) { %>
+
+                            <!-- or we can use : currentUser._id.equals(listing.owner._id); -->
+
+
+
+
+
+                            <% } %>
+
+
+                                <!-- Rating Section -->
+                                <div class="rating">
+                                    <h2>Rate this product:</h2>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                </div>
+
+
+
+                                <!-- Comment Section -->
+                                <div class="comment-section">
+                                    <h3>Leave a Comment:</h3>
+                                    <form class="comment-form " action="/listings/<%= listing.product_id  %>/reviews"
+                                        method="post">
+                                        <input type="number" class="ratingNumber" name="rating" id=""
+                                            style="display: none;">
+                                        <textarea name="comment" class="commentText" rows="3"
+                                            placeholder="Write your comment here..."></textarea>
+                                        <button type="submit" class="submit-comment">Submit</button>
+                                    </form>
+                                    <ul class="comments-list">
+                                        <% for( let index=0; index < reviews.length; index++ ) { %>
+                                            <li class="">
+                                                <div class="given-stars">
+
+                                                    <% for(let i=0; i < reviews[index].rating; i++){ %>
+                                                        <span class="star">★</span>
+                                                        <% } %>
+
+                                                            <% if (currentUser &&
+                                                                currentUser.customer_id==reviews[index].customer_id) {
+                                                                %>
+                                                                <a
+                                                                    href="<%= listing.product_id%>/reviews/<%= reviews[index].review_id%>">Delete
+                                                                </a>
+
+                                                                <% } %>
+
+
+                                                </div>
+
+                                                <div class="flex flex-col gap-y-2 text-[]">
+                                                    <div class="text-white">
+                                                        <i class="fa-solid fa-at"></i>
+                                                        <%= reviews[index].customer_name %>
+                                                    </div>
+
+                                                    <div class="commnentReview">
+                                                        <%= reviews[index].review %>
+                                                    </div>
+
+                                                </div>
+
+                                            </li>
+                                            <% } %>
+                                    </ul>
+                                </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="big_img_div">
+                <img src="" alt="" class="big_img">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+
+            <h2 class="text-fuchsia-500/70 w-[80%] mx-auto text-3xl mt-6">Similar Products</h2>
+            <div
+                class="similar-products w-[80%] mx-auto h-[12rem] my-4 text-white overflow-x-auto overflow-y-hidden whitespace-nowrap">
+
+                <% categoryProducts.forEach(product=> { %>
+
+                    <div class="card inline-block align-top w-64 h-full relative cursor-pointer overflow-hidden mr-4"
+                        onclick="window.location.href='/listings/<%= product.product_id %>'">
+
+                        <div class="product-image h-[70%] md:h-full overflow-hidden">
+                            <img class="normal_img object-cover object-center w-full h-full" src="<%= product.image %>"
+                                alt="">
+                        </div>
+
+                        <div class="absolute bottom-2 left-2 right-2">
+                            <p>
+                                <%= product.product_name %>
+                            </p>
+                            <p>$<%= product.price %>
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <% }); %>
+
+            </div>
+
+
+
+            <script>
+
+                let rating = 5;
+                let inputRating = document.querySelector('.ratingNumber')
+
+                // Simple script to handle star rating
+                const stars = document.querySelectorAll('.rating .star');
+                stars.forEach((star, index) => {
+                    star.addEventListener('click', () => {
+                        rating = index + 1;
+                        stars.forEach((s, i) => {
+                            s.style.color = i <= index ? '#ffcc00' : '#fff'; // Fill stars up to the clicked one
+                        });
+                    });
+                });
+
+                // Handle comment submission
+                const commentForm = document.querySelector('.comment-form');
+                commentForm.addEventListener('submit', (e) => {
+                    inputRating.value = rating
+
+                    e.preventDefault(); // Prevent default form submission
+                    const commentText = commentForm.querySelector('textarea').value;
+                    if (commentText.trim() !== '') {
+                        commentForm.submit()
+                    }
+
+                });
+
+                let commentsDom = document.querySelectorAll('.comments-list li .commnentReview');
+                commentsDom.forEach((commentDom) => {
+                    let comment = commentDom.innerHTML;
+                    //console.log(comment);
+                    if (comment.length > 170) {
+                        let stripedText = comment.substring(0, 170);
+                        commentDom.classList.add('read-more')
+                        commentDom.innerHTML = `${stripedText}`;
+                    }
+
+
+                    commentDom.addEventListener('click', () => {
+                        commentDom.classList.remove('read-more')
+                        commentDom.innerHTML = comment;
+                    })
+
+                })
+
+                let allComment = document.querySelectorAll('.comments-list li');
+                allComment.forEach((eachComment) => {
+                    eachComment.addEventListener('mouseover', () => {
+                        eachComment.querySelector('a').style.display = 'inline-block';
+                    })
+
+                    eachComment.addEventListener('mouseout', () => {
+                        eachComment.querySelector('a').style.display = 'none';
+                    })
+                })
+
+                document.addEventListener('DOMContentLoaded', () => {
+                    const inputField = document.getElementById('quantity');
+                    const buttons = document.querySelectorAll('.input-container div');
+
+                    buttons.forEach(button => {
+                        button.addEventListener('click', () => {
+                            const action = button.getAttribute('data-action');
+                            let currentValue = parseInt(inputField.value) || 1;
+
+                            if (action === 'increase') {
+                                inputField.value = currentValue + 1;
+                            } else if (action === 'decrease') {
+                                inputField.value = Math.max(1, currentValue - 1);
+                            }
+                        });
+                    });
+                });
+
+
+
+                const normal_img = document.querySelector(".normal_img");
+                const big_img_div = document.querySelector(".big_img_div");
+                const big_img = document.querySelector(".big_img");
+                const close_btn = document.querySelector(".fa-xmark");
+
+                normal_img.addEventListener("click", function () {
+                    big_img_div.classList.add("active");
+                    big_img.src = normal_img.src;
+                })
+
+                close_btn.addEventListener("click", function () {
+                    big_img_div.classList.remove("active");
+                })
+
+
+
+            </script>
+
+
+        </body>

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+
+<style>
+    body{
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+    .product-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+
+    /* Container */
+    .product-details-container {
+        width: 90%;
+        max-width: 800px;
+        padding: 20px;
+        border-radius: 20px;
+        background: #222;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        position: relative;
+        animation: fadeIn 1s ease forwards;
+        overflow: hidden;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(100px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Product Image */
+    .product-image {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-height: 20rem;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+    }
+
+    /* Product Information */
+    .product-info h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        color: #ff6ec4;
+    }
+
+    .product-info p {
+        font-size: 1em;
+        line-height: 1.6;
+        color: #ccc;
+        margin-bottom: 20px;
+    }
+
+    .product-info h2 {
+        font-size: 1.8em;
+        color: #42e695;
+        margin-top: 20px;
+    }
+
+    /* Features List */
+    .features-list {
+        list-style: none;
+        margin: 15px 0;
+    }
+
+    .features-list li {
+        font-size: 1em;
+        color: #ccc;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+    }
+
+    .features-list li::before {
+        content: '✓';
+        margin-right: 10px;
+        color: #42e695;
+    }
+
+    /* Price Tag */
+    .price-tag {
+        font-size: 2em;
+        font-weight: bold;
+        color: #ff6ec4;
+        margin: 20px 0;
+    }
+
+    /* Back to Products Button */
+    .back-button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 1em;
+        color: #fff;
+        background: #42e695;
+        border: none;
+        border-radius: 20px;
+        text-decoration: none;
+        transition: background 0.3s ease, color 0.3s ease;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    button{
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 1em;
+        color: #fff;
+        background: #42e695;
+        border: none;
+        border-radius: 20px;
+        text-decoration: none;
+        transition: background 0.3s ease, color 0.3s ease;
+        cursor: pointer;
+        text-align: center;
+
+        margin-top: 0.5rem;
+    }
+
+    .back-button:hover {
+        background: #30cfd0;
+        color: #fff;
+    }
+
+    /* Rating Section */
+    .rating {
+        margin-top: 20px;
+    }
+
+    .rating .star {
+        font-size: 1.5em;
+        cursor: pointer;
+        color: #ffcc00;
+    }
+
+    /* Comment Section */
+    .comment-section {
+        margin-top: 30px;
+        border-top: 1px solid #444;
+        padding-top: 20px;
+    }
+
+    .comment-section h3 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+        color: #42e695;
+    }
+
+    .comment-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .comment-form textarea {
+        padding: 10px;
+        border: 1px solid #444;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        resize: vertical;
+        font-size: 1em;
+        background: #333;
+        color: #fff;
+    }
+
+    .submit-comment {
+        padding: 10px;
+        font-size: 1em;
+        color: #fff;
+        background: #42e695;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .submit-comment:hover {
+        background: #30cfd0;
+    }
+
+    /* Comments List */
+    .comments-list {
+        margin-top: 20px;
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .comments-list li {
+        position: relative;
+        margin-bottom: 15px;
+        padding: 10px;
+        background: #747171;
+        border-radius: 5px;
+        color: #333;
+    }
+
+    .comments-list li .commnentReview.read-more::after {
+        content: '...read more';
+        color: rgba(69, 71, 71, 0.616);
+    }
+
+
+    .given-stars .star {
+        color: #ffcc00;
+        font-size: 0.8rem;
+    }
+
+    .comments-list .given-stars a {
+        text-decoration: none;
+        margin-left: 1rem;
+        color: rgb(72, 70, 70);
+        display: none;
+    }
+
+    .comments-list .given-stars a:hover {
+        color: #30cfd0;
+    }
+
+
+
+    .big_img_div {
+
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        /* height: 50vh;
+    width: 110vw; */
+        /* border: 2px solid red; */
+        display: flex;
+        background-color: rgba(0, 0, 0, 0.611);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        transform: scale(0);
+        display: none;
+
+    }
+
+    .big_img_div img {
+        max-height: 80vh;
+        max-width: 80vw;
+    }
+
+    @keyframes popup {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    .big_img_div i {
+        position: absolute;
+        top: 5%;
+        right: 5%;
+        font-size: 2rem;
+        cursor: pointer;
+        color: white;
+        z-index: 400;
+    }
+
+    .big_img_div.active {
+        display: flex;
+        animation: popup 0.4s ease forwards;
+    }
+
+    .big_img_div.active .product-details-container {
+
+        overflow: auto;
+    }
+
+    .normal_img img {
+        overflow: hidden;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    #quantity{
+        width: 10rem;
+        padding: 2px 5px;
+        height: 2rem;
+        border-radius: 1rem;
+    }
+
+    
+        
+</style>
+
+<body class="">
+
+    <div class="product-container mt-[6rem]">
+        <div class="product-details-container">
+            <!-- Product Image -->
+            <div class="product-image md:h-[400px] h-[200px] cursor-pointer">
+                <img class="normal_img overflow-hidden object-cover object-center w-full h-fit md:h-full"
+                    src="https://images.unsplash.com/photo-1579811216948-6f57c19376a5?q=80&w=1998&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Product Image">
+            </div>
+
+            <!-- Product Information -->
+            <div class="product-info">
+
+                <h1>
+                    Sample Product Name
+                </h1>
+                <p>
+                    This is a placeholder product description that explains what the product is about.
+                </p>
+
+                <h2>Features:</h2>
+                <ul class="features-list">
+                    <li>Feature 1</li>
+                    <li>Feature 2</li>
+                    <li>Feature 3</li>
+                </ul>
+
+                <div class="price-tag">$99.99</div>
+
+                <!-- Add to Cart Form -->
+                <form class="my-4 flex flex-row gap-x-6 items-center" action="/cart/sample-id" method="post">
+                    <div class="input-container">
+                        <div class="text-2xl px-3 bg-slate-600 inline-block rounded-lg cursor-pointer"
+                            data-action="decrease">-</div>
+
+                        <input type="text" readonly value="1" name="quantity" id="quantity"
+                            class="w-[4rem] h-[2rem] text-center text-black rounded-md -mt-5 text-[1.2rem] font-bold">
+
+                        <div class="text-2xl px-3 bg-slate-600 inline-block rounded-lg cursor-pointer"
+                            data-action="increase">+</div>
+                    </div>
+                    <button type="submit" class="back-button">
+                        Add to cart
+                    </button>
+                </form>
+
+                <!-- Admin Buttons (Shown here statically) -->
+                <!-- <form class="inline-block" action="/listings/sample-id/edit" method="GET">
+                    <button
+                        class="my-2 bg-cyan-500 hover:bg-cyan-600 active:scale-90 text-white px-2 mr-4 py-2 w-[7rem] rounded-md hover:scale-105 duration-500">
+                        Edit listing
+                    </button>
+                </form>
+
+                <form class="inline-block" action="/listings/sample-id?_method=DELETE" method="POST">
+                    <button
+                        class="my-2 bg-black hover:bg-gray-600 active:scale-90 text-white px-2 py-2 w-[7rem] rounded-md hover:scale-105 duration-500">
+                        Delete listing
+                    </button>
+                </form> -->
+
+                <!-- Rating Section -->
+                <div class="rating">
+                    <h2>Rate this product:</h2>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+
+                <!-- Comment Section -->
+                <div class="comment-section">
+                    <h3>Leave a Comment:</h3>
+                    <form class="comment-form" action="/listings/sample-id/reviews" method="post">
+                        <input type="number" class="ratingNumber" name="rating" style="display: none;">
+                        <textarea name="comment" class="commentText" rows="3"
+                            placeholder="Write your comment here..."></textarea>
+                        <button type="submit" class="submit-comment">Submit</button>
+                    </form>
+                    <ul class="comments-list">
+                        <li class="">
+                            <div class="given-stars">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+
+                            <div class="flex flex-col gap-y-2 text-[]">
+                                <div class="text-white">
+                                    <i class="fa-solid fa-at"></i> Jane Doe
+                                </div>
+                                <div class="commnentReview">
+                                    This is a sample review comment for the product to simulate dynamic content.
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="">
+                            <div class="given-stars">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+
+                            <div class="flex flex-col gap-y-2 text-[]">
+                                <div class="text-white">
+                                    <i class="fa-solid fa-at"></i> John Smith
+                                </div>
+                                <div class="commnentReview">
+                                    Another example comment with more than enough words to test the read-more
+                                    functionality.
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="big_img_div">
+        <img src="" alt="" class="big_img">
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+
+    <script>
+        let rating = 5;
+        let inputRating = document.querySelector('.ratingNumber')
+
+        const stars = document.querySelectorAll('.rating .star');
+        stars.forEach((star, index) => {
+            star.addEventListener('click', () => {
+                rating = index + 1;
+                stars.forEach((s, i) => {
+                    s.style.color = i <= index ? '#ffcc00' : '#fff';
+                });
+            });
+        });
+
+        const commentForm = document.querySelector('.comment-form');
+        commentForm.addEventListener('submit', (e) => {
+            inputRating.value = rating
+            e.preventDefault();
+            const commentText = commentForm.querySelector('textarea').value;
+            if (commentText.trim() !== '') {
+                commentForm.submit();
+            }
+        });
+
+        let commentsDom = document.querySelectorAll('.comments-list li .commnentReview');
+        commentsDom.forEach((commentDom) => {
+            let comment = commentDom.innerHTML;
+            if (comment.length > 170) {
+                let stripedText = comment.substring(0, 170);
+                commentDom.classList.add('read-more')
+                commentDom.innerHTML = `${stripedText}`;
+            }
+
+            commentDom.addEventListener('click', () => {
+                commentDom.classList.remove('read-more')
+                commentDom.innerHTML = comment;
+            })
+        });
+
+        let allComment = document.querySelectorAll('.comments-list li');
+        allComment.forEach((eachComment) => {
+            eachComment.addEventListener('mouseover', () => {
+                const link = eachComment.querySelector('a');
+                if (link) link.style.display = 'inline-block';
+            })
+            eachComment.addEventListener('mouseout', () => {
+                const link = eachComment.querySelector('a');
+                if (link) link.style.display = 'none';
+            })
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputField = document.getElementById('quantity');
+            const buttons = document.querySelectorAll('.input-container div');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const action = button.getAttribute('data-action');
+                    let currentValue = parseInt(inputField.value) || 1;
+
+                    if (action === 'increase') {
+                        inputField.value = currentValue + 1;
+                    } else if (action === 'decrease') {
+                        inputField.value = Math.max(1, currentValue - 1);
+                    }
+                });
+            });
+        });
+
+        const normal_img = document.querySelector(".normal_img");
+        const big_img_div = document.querySelector(".big_img_div");
+        const big_img = document.querySelector(".big_img");
+        const close_btn = document.querySelector(".fa-xmark");
+
+        normal_img.addEventListener("click", function () {
+            big_img_div.classList.add("active");
+            big_img.src = normal_img.src;
+        });
+
+        close_btn.addEventListener("click", function () {
+            big_img_div.classList.remove("active");
+        });
+    </script>
+
+</body>
+
+
+</html>

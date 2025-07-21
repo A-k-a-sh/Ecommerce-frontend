@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fancy Animated Intro - E-commerce</title>
+    <style>
+        /* Full-screen animated gradient background */
+        html, body {
+            height: 100%;
+            margin: 0;
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            background: linear-gradient(120deg, #0e0f0f, #030303, #2a2727);
+            background-size: 400% 400%;
+            animation: gradientAnimation 12s ease infinite;
+        }
+
+        /* Gradient animation */
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Canvas for wave and particles */
+        #wave-canvas, #particles-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        /* Overlay container for intro text */
+        .intro-container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 80%;
+        }
+
+        .intro-container h1 {
+            font-size: 4em;
+            font-weight: bold;
+            margin: 0.2em 0;
+            animation: fadeIn 3s ease;
+        }
+
+        .intro-container p {
+            font-size: 1.5em;
+            max-width: 600px;
+            margin: 0.5em auto;
+            animation: fadeIn 4s ease;
+        }
+
+        /* Button styling */
+        .intro-button {
+            padding: 15px 40px;
+            margin-top: 20px;
+            background: rgba(44, 182, 209, 0.9);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            animation: fadeIn 5s ease;
+        }
+
+        .intro-button:hover {
+            background: rgba(17, 153, 142, 0.9);
+            transform: scale(1.05);
+        }
+
+        /* Fade-in animation for text and button */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+       
+    </style>
+</head>
+<body>
+
+    <!-- Intro text content -->
+    <div class="intro-container">
+        <h1>Welcome to EasyBuy</h1>
+        <p>Discover exclusive deals on the latest trends in fashion, electronics, and more. Your journey to luxury begins here!</p>
+        <a href="/listings">
+            <button class="intro-button">Explore Now</button>
+        </a>
+    </div>
+
+    <!-- Canvas for animated wave -->
+    <canvas id="wave-canvas"></canvas>
+    <!-- Canvas for floating particles -->
+    <canvas id="particles-canvas"></canvas>
+
+    <script>
+        // Set up wave canvas and context
+        const waveCanvas = document.getElementById("wave-canvas");
+        const waveCtx = waveCanvas.getContext("2d");
+
+        waveCanvas.width = window.innerWidth;
+        waveCanvas.height = window.innerHeight;
+
+        // Wave properties
+        let wave = {
+            y: waveCanvas.height / 1.3,
+            length: 0.01,
+            amplitude: 80,
+            frequency: 0.015
+        };
+        let increment = wave.frequency;
+
+        // Resize wave canvas on window resize
+        window.addEventListener("resize", () => {
+            waveCanvas.width = window.innerWidth;
+            waveCanvas.height = window.innerHeight;
+            wave.y = waveCanvas.height / 1.3;
+        });
+
+        // Animate wave
+        function animateWave() {
+            requestAnimationFrame(animateWave);
+            waveCtx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+
+            // Draw wave
+            waveCtx.beginPath();
+            waveCtx.moveTo(0, waveCanvas.height / 2);
+
+            for (let i = 0; i < waveCanvas.width; i++) {
+                waveCtx.lineTo(
+                    i,
+                    wave.y + Math.sin(i * wave.length + increment) * wave.amplitude * Math.sin(increment)
+                );
+            }
+
+            waveCtx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+            waveCtx.lineWidth = 2;
+            waveCtx.stroke();
+
+            increment += wave.frequency;
+        }
+
+        animateWave();
+
+        // Set up particles canvas and context
+        const particlesCanvas = document.getElementById("particles-canvas");
+        const particlesCtx = particlesCanvas.getContext("2d");
+
+        particlesCanvas.width = window.innerWidth;
+        particlesCanvas.height = window.innerHeight;
+
+        // Particle properties
+        const particles = [];
+        const particleCount = 50;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * particlesCanvas.width;
+                this.y = Math.random() * particlesCanvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 1.5;
+                this.speedY = (Math.random() - 0.5) * 1.5;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Reposition if out of bounds
+                if (this.x > particlesCanvas.width || this.x < 0) this.speedX *= -1;
+                if (this.y > particlesCanvas.height || this.y < 0) this.speedY *= -1;
+            }
+            draw() {
+                particlesCtx.fillStyle = "rgba(255, 255, 255, 0.8)";
+                particlesCtx.beginPath();
+                particlesCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                particlesCtx.closePath();
+                particlesCtx.fill();
+            }
+        }
+
+        // Create particles
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        // Animate particles
+        function animateParticles() {
+            requestAnimationFrame(animateParticles);
+            particlesCtx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
+
+            particles.forEach((particle) => {
+                particle.update();
+                particle.draw();
+            });
+        }
+
+        animateParticles();
+    </script>
+
+</body>
+</html>
